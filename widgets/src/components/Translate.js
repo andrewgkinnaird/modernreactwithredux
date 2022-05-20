@@ -10,11 +10,15 @@ const languages = [
     },
     {
         label:'Arabic',
-        value:'ab'
+        value:'ar'
     },
     {
         label:'Hindi',
         value:'hi'
+    },
+    {
+        label:'Japanese',
+        value:'ja'
     }
 ]
 

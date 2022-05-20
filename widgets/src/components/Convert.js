@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-//import axios from 'axios';
+import axios from 'axios';
 
 const Convert = ({language,text}) => {
-    const [translated,setTranslated] = useState('hi');
+    const [translated,setTranslated] = useState('');
     const [debouncedText,setDebouncedText] = useState(translated);
 
     useEffect(()=>{
         
-        setTranslated(`${language.value} combined with ${text}`);
-
+        console.log(language);
         const timer = setTimeout(()=>{
+            console.log(language);
             setDebouncedText(text);
         },1000)
 
@@ -20,17 +20,20 @@ const Convert = ({language,text}) => {
     },[language,text]);
 
     useEffect(()=>{
-        console.log("making api request for " + debouncedText);
+        
+        const  getGoogleTranslation = async() => {
+            const response = await axios.post('https://translation.googleapis.com/language/translate/v2',{},{
+                params:{
+                    q:text,
+                    target:language.value,
+                    key:'AIzaSyCHUCmpR7cT_yDFHC98CZJy2LTms-IwDlM'
+                }
+            });
+            setTranslated(response.data.data.translations[0].translatedText);
+        }
+        getGoogleTranslation();
 
-        /*
-        axios.post('https://translation.googleapis.com/language/translate/v2',{},{
-            params:{
-                q:text,
-                target:language.value,
-                key:'AIzaSyCHUCmpR7cT_yDFHC98CZJy2LTms-IwDlM'
-            }
-        });*/
-    },[debouncedText]);
+    },[debouncedText,language]);
 
     return (
         <div>{translated}</div>
